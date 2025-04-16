@@ -36,6 +36,24 @@ def create_item():
     item['_id'] = str(result.inserted_id)
     return jsonify({'message': 'Item created successfully', 'item': item}), 201
 
+# Command: Add multiple items to the database
+@app.route('/items/bulk', methods=['POST'])
+@auth.login_required
+def add_items_bulk():
+    data = request.get_json()
+    if not isinstance(data, list):
+        return jsonify({'error': 'Input should be a list of items'}), 400
+
+    for item in data:
+        if 'name' not in item or 'description' not in item:
+            return jsonify({'error': 'Each item must have a name and description'}), 400
+
+    result = items_collection.insert_many(data)
+    for item_id, item in zip(result.inserted_ids, data):
+        item['_id'] = str(item_id)
+
+    return jsonify({'message': 'Items added successfully', 'items': data}), 201
+
 # Query: Get all items
 @app.route('/items', methods=['GET'])
 @auth.login_required
@@ -56,4 +74,4 @@ if __name__ == '__main__':
 # The items are stored in a MongoDB collection, and the application uses the PyMongo library to interact with the database.
 # The `verify_password` function checks the username and password against the stored user data.
 # The application runs on localhost with debugging enabled.
-# To run the application, save this code in a file named `app.py` and run it using Python.          
+# To run the application, save this code in a file named `app.py` and run it using Python.
