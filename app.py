@@ -47,3 +47,13 @@ def get_items():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+# This code is a simple Flask application that demonstrates the CQRS pattern with MongoDB.
+# It allows users to create and retrieve items using HTTP requests.
+# The application uses basic authentication to secure the endpoints.
+# The `create_item` function handles the command to create a new item,
+# while the `get_items` function handles the query to retrieve all items.
+# The items are stored in a MongoDB collection, and the application uses the PyMongo library to interact with the database.
+# The `verify_password` function checks the username and password against the stored user data.
+# The application runs on localhost with debugging enabled.
+# To run the application, save this code in a file named `app.py` and run it using Python.          
